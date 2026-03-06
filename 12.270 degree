@@ -1,0 +1,25 @@
+import cv2
+
+# Read image from your path
+image = cv2.imread(r"C:\Users\Dell\OneDrive\Pictures\RC.webp")
+
+if image is None:
+    print("Error: Image not found.")
+else:
+    # Resize image to smaller size
+    small_image = cv2.resize(image, None, fx=0.6, fy=0.6, interpolation=cv2.INTER_AREA)
+
+    # Flip image along Y-axis
+    flipped_image = cv2.flip(small_image, 1)
+
+    # Rotate 90° counterclockwise (270° clockwise)
+    rotated_image = cv2.rotate(flipped_image, cv2.ROTATE_90_COUNTERCLOCKWISE)
+
+    cv2.imshow("Original Image", small_image)
+    cv2.imshow("Rotated 270-degree Clockwise Along Y-axis", rotated_image)
+
+    # Save rotated image
+    cv2.imwrite(r"C:\Users\Dell\OneDrive\Pictures\rotated_image_270.png", rotated_image)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
