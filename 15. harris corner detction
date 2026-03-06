@@ -1,0 +1,33 @@
+import cv2
+import numpy as np
+
+image = cv2.imread(r"C:\Users\Dell\OneDrive\Pictures\RC.webp")
+
+if image is None:
+    print("Error: Image not found.")
+else:
+    # Resize image
+    image = cv2.resize(image, None, fx=0.6, fy=0.6, interpolation=cv2.INTER_AREA)
+
+    # Convert to grayscale
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Convert to float32
+    gray = np.float32(gray)
+
+    # Harris Corner Detection
+    harris_corners = cv2.cornerHarris(gray, blockSize=2, ksize=3, k=0.04)
+
+    # Dilate to mark corners
+    harris_corners = cv2.dilate(harris_corners, None)
+
+    # Mark corners in red
+    image[harris_corners > 0.01 * harris_corners.max()] = [0, 0, 255]
+
+    cv2.imshow("Original Image with Corners", image)
+
+    # Save output image
+    cv2.imwrite(r"C:\Users\Dell\OneDrive\Pictures\harris_corners.png", image)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
