@@ -1,0 +1,32 @@
+import cv2
+import numpy as np
+
+# Read image from your path
+image = cv2.imread(r"C:\Users\Dell\OneDrive\Pictures\RC.webp")
+
+if image is None:
+    print("Error: Image not found.")
+else:
+    # Resize image to smaller size
+    image = cv2.resize(image, None, fx=0.6, fy=0.6, interpolation=cv2.INTER_AREA)
+
+    rows, cols, ch = image.shape
+
+    # Define points for perspective transformation
+    pts1 = np.float32([[50, 50], [400, 50], [50, 400], [400, 400]])
+    pts2 = np.float32([[10, 100], [300, 50], [100, 300], [350, 350]])
+
+    # Get transformation matrix
+    matrix = cv2.getPerspectiveTransform(pts1, pts2)
+
+    # Apply perspective transformation
+    transformed_image = cv2.warpPerspective(image, matrix, (cols, rows))
+
+    cv2.imshow("Original Image", image)
+    cv2.imshow("Perspective Transformed Image", transformed_image)
+
+    # Save transformed image
+    cv2.imwrite(r"C:\Users\Dell\OneDrive\Pictures\perspective_transformed.png", transformed_image)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
