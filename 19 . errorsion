@@ -1,0 +1,30 @@
+import cv2
+import numpy as np
+
+# Read the input image
+image = cv2.imread(r"C:\Users\Dell\OneDrive\Pictures\RC.webp")
+
+if image is None:
+    print("Error: Image not found.")
+else:
+    # Resize image to smaller size
+    image = cv2.resize(image, (200, 250))
+
+    # Convert image to grayscale
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Create kernel for erosion
+    kernel = np.ones((5,5), np.uint8)
+
+    # Apply erosion
+    eroded_image = cv2.erode(gray, kernel, iterations=1)
+
+    # Display images
+    cv2.imshow("Original Image", image)
+    cv2.imshow("Eroded Image", eroded_image)
+
+    # Save result
+    cv2.imwrite(r"C:\Users\Dell\OneDrive\Pictures\eroded_image.png", eroded_image)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
