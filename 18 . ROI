@@ -1,0 +1,25 @@
+import cv2
+
+# Read the input image
+image = cv2.imread(r"C:\Users\Dell\OneDrive\Pictures\RC.webp")
+
+if image is None:
+    print("Error: Image not found.")
+else:
+    # Resize image to a smaller size
+    image = cv2.resize(image, (300, 400))
+
+    # Select Region of Interest (ROI)
+    roi = image[50:150, 50:150]   # cropping a part of the image
+
+    # Paste ROI to another location
+    image[200:300, 200:300] = roi
+
+    # Display images
+    cv2.imshow("Modified Image with ROI", image)
+
+    # Save result
+    cv2.imwrite(r"C:\Users\Dell\OneDrive\Pictures\roi_result.png", image)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
