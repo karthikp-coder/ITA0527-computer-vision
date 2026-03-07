@@ -1,0 +1,37 @@
+import cv2
+import numpy as np
+
+# Read the input image
+image = cv2.imread(r"C:\Users\Dell\OneDrive\Pictures\RC.webp")
+
+if image is None:
+    print("Error: Image not found.")
+else:
+    # Resize image to passport size
+    image = cv2.resize(image, (150, 200), interpolation=cv2.INTER_AREA)
+
+    # Convert the image to grayscale
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    # Apply Sobel filter in X and Y directions
+    sobel_x = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=3)
+    sobel_y = cv2.Sobel(gray, cv2.CV_64F, 0, 1, ksize=3)
+
+    # Convert gradients to absolute scale
+    sobel_x = cv2.convertScaleAbs(sobel_x)
+    sobel_y = cv2.convertScaleAbs(sobel_y)
+
+    # Combine gradients
+    sobel_combined = cv2.addWeighted(sobel_x, 0.5, sobel_y, 0.5, 0)
+
+    # Display images
+    cv2.imshow("Original Image", image)
+    cv2.imshow("Sobel X", sobel_x)
+    cv2.imshow("Sobel Y", sobel_y)
+    cv2.imshow("Sobel Combined", sobel_combined)
+
+    # Save results
+    cv2.imwrite(r"C:\Users\Dell\OneDrive\Pictures\sobel_combined.png", sobel_combined)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
