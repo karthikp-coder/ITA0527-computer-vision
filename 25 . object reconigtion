@@ -1,0 +1,24 @@
+import cv2
+import numpy as np
+
+# Load reference (watch) image
+watch = cv2.imread(r"C:\Users\Dell\OneDrive\Pictures\RC.webp", 0)
+
+# Load scene image (image where watch should be recognized)
+scene = cv2.imread(r"C:\Users\Dell\OneDrive\Pictures\RC.webp", 0)
+
+orb = cv2.ORB_create()
+
+kp1, des1 = orb.detectAndCompute(watch, None)
+kp2, des2 = orb.detectAndCompute(scene, None)
+
+bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+
+matches = bf.match(des1, des2)
+matches = sorted(matches, key=lambda x: x.distance)
+
+result = cv2.drawMatches(watch, kp1, scene, kp2, matches[:20], None, flags=2)
+
+cv2.imshow("Watch Recognition", result)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
